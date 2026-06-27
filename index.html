@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soug — Groceries in 20 minutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-msg" id="topbarMsg">🛵 Delivering to <strong>Giza, Dokki</strong> — orders now arrive in <strong>18 min</strong></span>
+    <button class="topbar-change" id="changeLocationBtn">Change location</button>
+  </div>
+</div>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="#top">
+      <span class="logo-mark">س</span>
+      <span class="logo-word">Soug<span class="logo-dot">.</span></span>
+    </a>
+
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="Search for tomatoes, milk, labneh…" autocomplete="off">
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+
+    <nav class="header-actions">
+      <button class="icon-btn" id="favBtn" aria-label="Favorites" title="Favorites">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2 4 6 4c2.2 0 3.8 1.3 4.6 2.7C11.4 5.3 13 4 15.2 4c4 0 5.5 4 4 7.7C19.5 16.4 12 21 12 21z" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span class="badge" id="favBadge" hidden>0</span>
+      </button>
+      <button class="cart-btn" id="cartBtn">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/></svg>
+        <span>Basket</span>
+        <span class="cart-total" id="headerCartTotal">E£0</span>
+        <span class="badge cart-badge" id="cartBadge" hidden>0</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Category strip (sticky) -->
+  <div class="cat-strip" id="catStrip"></div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">Fresh stock, every morning</p>
+      <h1 class="hero-title">Your fridge,<br>refilled <em>before</em><br>you run out.</h1>
+      <p class="hero-sub">Real groceries from real stalls — produce, dairy, bakery and pantry — landing on your doorstep in under 20 minutes.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" id="shopNowBtn">Start shopping</button>
+        <a class="btn btn-ghost" href="#how-it-works">How it works</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><strong>20 min</strong><span>avg. delivery</span></div>
+        <div class="trust-item"><strong>1,200+</strong><span>items in stock</span></div>
+        <div class="trust-item"><strong>4.8★</strong><span>from 38k orders</span></div>
+      </div>
+    </div>
+
+    <!-- SIGNATURE ELEMENT: live receipt ticker -->
+    <div class="receipt-wrap" aria-label="Live basket preview">
+      <div class="receipt">
+        <div class="receipt-head">
+          <span class="receipt-store">SOUG MARKET</span>
+          <span class="receipt-sub">Tax Invoice · Cash or Card</span>
+        </div>
+        <div class="receipt-rule"></div>
+        <div class="receipt-lines" id="receiptLines">
+          <div class="receipt-empty">Your basket is empty.<br>Add something fresh →</div>
+        </div>
+        <div class="receipt-rule"></div>
+        <div class="receipt-total-row">
+          <span>TOTAL</span>
+          <span id="receiptTotal">E£0.00</span>
+        </div>
+        <div class="receipt-barcode">
+          <svg viewBox="0 0 200 36" preserveAspectRatio="none"><g id="barcodeBars"></g></svg>
+        </div>
+        <div class="receipt-foot">Thank you — fresh again tomorrow</div>
+      </div>
+      <div class="receipt-pin"></div>
+    </div>
+  </div>
+
+  <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z"></path></svg>
+</section>
+
+<!-- ============ PROMO STRIP ============ -->
+<section class="promo-strip">
+  <div class="promo-track" id="promoTrack"></div>
+</section>
+
+<!-- ============ MAIN SHOP ============ -->
+<main class="shop" id="shop">
+  <div class="shop-inner" id="shopSections"><!-- injected per category --></div>
+</main>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="how" id="how-it-works">
+  <h2 class="section-title">From stall to doorstep</h2>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-icon">🧺</div>
+      <h3>Fill your basket</h3>
+      <p>Browse stalls sorted like the real market — produce, dairy, bakery, pantry.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">🧾</div>
+      <h3>Checkout in seconds</h3>
+      <p>Watch your receipt build live. Cash on delivery or card, your call.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">🛵</div>
+      <h3>Rider's on the way</h3>
+      <p>Track the basket from our nearest hub straight to your door.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-mark">س</span>
+      <span class="logo-word">Soug<span class="logo-dot">.</span></span>
+      <p>Giza's fastest grocery run. Open daily, 7am – 1am.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#shop">All categories</a>
+      <a href="#" data-cat="deals">Today's deals</a>
+      <a href="#how-it-works">How it works</a>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <a href="#" id="footerSupport">Support chat</a>
+      <a href="#" id="footerTrack">Track an order</a>
+      <a href="#" id="footerReturns">Returns policy</a>
+    </div>
+    <div class="footer-col">
+      <h4>Get the app</h4>
+      <div class="app-badges">
+        <button class="app-badge">App Store</button>
+        <button class="app-badge">Google Play</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Soug Market. All rights reserved.</div>
+</footer>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping basket">
+  <div class="drawer-head">
+    <h2>Your basket</h2>
+    <button class="drawer-close" id="drawerClose" aria-label="Close basket">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="drawer-row"><span>Subtotal</span><span id="drawerSubtotal">E£0.00</span></div>
+    <div class="drawer-row"><span>Delivery</span><span id="drawerDelivery">E£0.00</span></div>
+    <div class="drawer-row drawer-total"><span>Total</span><span id="drawerTotal">E£0.00</span></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    <p class="drawer-hint" id="drawerHint">Add E£150.00 more for free delivery</p>
+  </div>
+</aside>
+
+<!-- ============ PRODUCT QUICK VIEW MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="product-modal" id="productModal" role="dialog" aria-modal="true"></div>
+</div>
+
+<!-- ============ CHECKOUT MODAL ============ -->
+<div class="modal-overlay" id="checkoutOverlay">
+  <div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true"></div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<script src="products.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
